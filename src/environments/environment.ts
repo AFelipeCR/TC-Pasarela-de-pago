@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: 'http://192.168.0.10:3000/'
+  apiEndpoint: 'https://fierce-springs-37412.herokuapp.com/'
 };
 
 /*
