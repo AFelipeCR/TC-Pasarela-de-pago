@@ -10,7 +10,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   getIPAddress(){
-    return this.http.get<{ip:string}>('http://api.ipify.org/?format=json')
+    return this.http.get<{ip:string}>('https://api.ipify.org/?format=json')
   }
 
   getProducts(){
