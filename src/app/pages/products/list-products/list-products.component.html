@@ -1,0 +1,23 @@
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h2>Compra un producto</h2>
+				</div>
+
+				<div class="card-body">
+					<div class="list-group">
+						<a [routerLink]="['buy', product.id]" *ngFor="let product of products" class="list-group-item list-group-item-action" aria-current="true">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1">{{ product.name }}</h5>
+							</div>
+							<p class="mb-1">Precio: {{ product.unitPrice }}</p>
+							<small>Unidades : {{ product.units }}.</small>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

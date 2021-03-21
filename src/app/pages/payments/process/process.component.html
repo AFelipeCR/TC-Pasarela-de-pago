@@ -1,0 +1,163 @@
+<div class="container">
+	<div class="card">
+		<div *ngIf="product" class="card-body">
+			<h2 class="card-title">{{ product.name }}</h2>
+			<div class="row">
+				<div class="col-lg-5">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-text">Precio: {{ product.unitPrice }}</h4>
+							<h4 class="card-text">Cantidad: {{ quantity }}</h4>
+							<h3 class="card-text">Total: {{ product.unitPrice * quantity }}</h3>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-7">
+					<div class="card">
+						<div class="card-body" *ngIf="!customer">
+							<form (ngSubmit) ="keepCustomer()" [formGroup]="formCustomer">
+								<div class="row">
+									<div class="mb-2 col-lg-6">
+										<label class="form-label">Nombres</label>
+										<input formControlName="name" type="text" class="form-control" placeholder="Nombres" required>
+									</div>
+	
+									<div class="mb-2 col-lg-6">
+										<label class="form-label">Apellidos</label>
+										<input formControlName="last_name" type="text" class="form-control" placeholder="Apellidos" required>
+									</div>
+	
+									<div class="mb-2 col-lg-4">
+										<label class="form-label">Tipo de documento</label>
+										<select formControlName="doc_type" class="form-select">
+											<option value="CC">Cédula de ciudadanía</option>
+										</select>
+									</div>
+	
+									<div class="mb-2 col-lg-8">
+										<label class="form-label">Número de documento</label>
+										<input formControlName="doc_number" type="number" class="form-control" placeholder="Número de documento" required>
+									</div>
+
+									<div class="mb-2 col-lg-6">
+										<label class="form-label">Email</label>
+										<input formControlName="email" type="email" class="form-control" placeholder="Email" required>
+									</div>
+
+									<div class="mb-2 col-lg-6">
+										<label class="form-label">Teléfono</label>
+										<input formControlName="phone" type="number" class="form-control" placeholder="Teléfono" required>
+									</div>
+
+									<div class="mb-2 col-lg-4">
+										<label class="form-label">Ciudad</label>
+										<input formControlName="city" type="text" class="form-control" placeholder="Ciudad" required>
+									</div>
+
+									<div class="mb-2 col-lg-8">
+										<label class="form-label">Dirección</label>
+										<input formControlName="address" type="text" class="form-control" placeholder="Dirección" required>
+									</div>
+
+									<button class="btn btn-success">Registrarme</button>
+								</div>
+							</form>
+						</div>
+
+						<div class="card-body" *ngIf="customer">
+							<h2 class="card-text">{{ customer.name + ' ' + customer.last_name }}</h2>
+						</div>
+
+						<div class="card-body" *ngIf="customer && !customer.token_card">
+							<h1 class="card-title">Métodos de pago</h1>
+							<div class="accordion accordion-flush" id="flush-methods">
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="flish-head-card">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-card" aria-expanded="false" aria-controls="flush-card">
+										Tarjeta
+										</button>
+								  	</h2>
+									<div id="flush-card" class="accordion-collapse collapse" aria-labelledby="flish-head-card" data-bs-parent="#flush-methods">
+										<div class="accordion-body">
+											<form (ngSubmit)="trySendCardInfo()" [formGroup]="formCard">
+												<div class="mb-2">
+													<label class="form-label">Número de la tarjeta</label>
+													<input formControlName="number" type="number" class="form-control" placeholder="Tarjeta" required>
+												</div>
+
+												<div class="row">
+													<div class="mb-2 col-lg-4">
+														<label class="form-label">Año de expiración</label>
+														<input formControlName="exp_year" type="number" class="form-control" placeholder="Año expiración" required>
+													</div>
+	
+													<div class="mb-2 col-lg-4">
+														<label class="form-label">Mes de expiración</label>
+														<input formControlName="exp_month" type="number" class="form-control" placeholder="Mes expiración" required>
+													</div>
+	
+													<div class="mb-2 col-lg-4">
+														<label class="form-label">CVC</label>
+														<input formControlName="cvc" type="number" class="form-control" placeholder="CVC" required>
+													</div>
+												</div>
+
+												<button class="btn btn-success" [disabled]="isRequesting">
+													<div *ngIf="!isRequesting">Registrar tarjeta</div>
+													<div *ngIf="isRequesting" class="spinner-border text-light" role="status">
+														<span class="sr-only"></span>
+													</div>
+												</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body" *ngIf="customer && customer.token_card">
+							<div class=" table-responsive">
+								<table class="table table-bordered">
+									<tbody>
+										<tr>
+											<th>Producto</th>
+											<td>{{ product.name }}</td>
+										</tr>
+
+										<tr>
+											<th>Metodo de pago</th>
+											<td *ngIf="customer.token_card">Tarjeta</td>
+										</tr>
+
+										<tr>
+											<th>Cantidad</th>
+											<td>{{ quantity }}</td>
+										</tr>
+
+										<tr>
+											<th>Valor unitario</th>
+											<td>{{ product.unitPrice }}</td>
+										</tr>
+
+										<tr>
+											<th>Total</th>
+											<td>{{ quantity * product.unitPrice }}</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<button class="btn btn-success" (click)="tryPay()" [disabled]="isRequesting">
+									<div *ngIf="!isRequesting">Efectuar pago</div>
+									<div *ngIf="isRequesting" class="spinner-border text-light" role="status">
+										<span class="sr-only"></span>
+									</div>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

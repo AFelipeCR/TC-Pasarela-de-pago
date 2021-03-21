@@ -1,0 +1,33 @@
+<div class="container">
+	<div class="card">
+		<div *ngIf="product" class="card-body">
+			<h2 class="card-title">{{ product.name }}</h2>
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="card">
+						<div class="card-body">
+							<img class="w-100" [src]="product.img">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-8">
+					<div class="card">
+						<div class="card-body">
+							<h3 class="card-title">Precio: {{ product.unitPrice }}</h3>
+
+							<h4 class="card-title">Unidades: {{ product.unitPrice }}</h4>
+							<form (ngSubmit)="onSubmit()" [formGroup]="form">
+								<div class="mb-3">
+									<label class="form-label">Cantidad</label>
+									<input formControlName="quantity"  type="number" min="1" [max]="product.units" class="form-control" placeholder="Cantidad" required>
+								</div>
+								<button class="btn btn-success">Comprar</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
